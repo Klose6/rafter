@@ -1,10 +1,10 @@
-# GoKV
+# Rafter
 
-GoKV is a distributed transactional key-value store written in Go. It aims at the same core capabilities as [TiKV](https://github.com/tikv/tikv): a sharded key space, snapshot-isolated transactions, and strongly replicated storage.
+Rafter is a distributed transactional key-value store written in Go. It aims at the same core capabilities as [TiKV](https://github.com/tikv/tikv): a sharded key space, snapshot-isolated transactions, and strongly replicated storage. This project is mainly for learning purposes.
 
 Three pieces carry that design:
 
-- **Percolator**, implemented in GoKV, for distributed transactions.
+- **Percolator**, implemented in Rafter, for distributed transactions.
 - **[HashiCorp Raft](https://github.com/hashicorp/raft)** for replicating each shard’s log so committed data survives node failure.
 - **RocksDB** as the local storage engine on every node.
 
@@ -58,7 +58,7 @@ Raft’s job is the region state machine: put, delete, and the Percolator mutati
 
 ## Transactions
 
-GoKV implements [Percolator](https://research.google/pubs/large-scale-incremental-processing-using-distributed-transactions-and-notifications/) itself, rather than calling an external transaction library.
+Rafter implements [Percolator](https://research.google/pubs/large-scale-incremental-processing-using-distributed-transactions-and-notifications/) itself, rather than calling an external transaction library.
 
 Percolator gives snapshot isolation with optimistic concurrency control. There is no central lock manager. The client drives a two-phase commit, and the locks live in the `lock` column family next to the data.
 
@@ -74,9 +74,9 @@ Crash safety comes from that primary. Any replica can finish a transaction it di
 
 ## What “similar to TiKV” means here
 
-GoKV follows TiKV’s shape, not its full feature set.
+Rafter follows TiKV’s shape, not its full feature set.
 
-| | TiKV | GoKV |
+| | TiKV | Rafter |
 | --- | --- | --- |
 | Language | Rust | Go |
 | Transactions | Percolator | Percolator, implemented in this repo |
